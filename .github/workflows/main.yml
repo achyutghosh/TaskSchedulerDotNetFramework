@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
@@ -18,13 +17,13 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.6
     
     - name: Restore NuGet Packages
-      run: nuget restore DataSyncScheduler.sln
+      run: nuget restore TaskSchedulerDotNetFramework.sln
 
-    - name: Build and Publish DataSync Application
-      run: msbuild DataSyncScheduler.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+    - name: Build and Publish Task Scheduler Application with .NET Framewrk 4.8
+      run: msbuild TaskSchedulerDotNetFramework.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
-        name: Publish DataSync Application
+        name: Publish Task Scheduler Application with .NET Framewrk 4.8
         path: bin\Release\Publish
