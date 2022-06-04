@@ -1,0 +1,30 @@
+name: Build Task Scheduler Application with .NET Framewrk 4.8
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      name: Checkout Code
+    
+    - name: Setup MSBuild Path
+      uses: microsoft/setup-msbuild@v1.1
+      
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.6
+    
+    - name: Restore NuGet Packages
+      run: nuget restore DataSyncScheduler.sln
+
+    - name: Build and Publish DataSync Application
+      run: msbuild DataSyncScheduler.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: Publish DataSync Application
+        path: bin\Release\Publish
